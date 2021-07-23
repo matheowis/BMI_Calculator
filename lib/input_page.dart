@@ -1,7 +1,12 @@
+import 'dart:ui';
+
+import 'package:bmi_calculator/constants/AppColors.dart';
+import 'package:bmi_calculator/constants/AppStyles.dart';
+import 'package:bmi_calculator/unitls/MyMath.dart';
 import 'package:flutter/material.dart';
 import 'my_box_container.dart';
-import 'gender_button.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'gender_gesture.dart';
+import 'unitls/MyMath.dart';
 
 class InputPage extends StatefulWidget {
   @override
@@ -9,14 +14,19 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  String activeGender = 'NONE';
+  Gender activeGender = Gender.NONE;
+  int height = 180;
 
-  void Function() pickGender(String gender) {
-    return () {
-      setState(() {
-        activeGender = gender;
-      });
-    };
+  void setHeight(double h) {
+    setState(() {
+      height = h.round();
+    });
+  }
+
+  void pickGender(Gender gender) {
+    setState(() {
+      activeGender = gender;
+    });
   }
 
   @override
@@ -32,21 +42,42 @@ class _InputPageState extends State<InputPage> {
           Expanded(
             child: Row(
               children: [
-                MyBoxContainer(
-                  active: activeGender == 'MALE',
-                  child: GenderButton(
-                    onPressed: pickGender("MALE"),
-                    title: 'MALE',
-                    icon: FontAwesomeIcons.mars,
-                  ),
+                GenderGesture(
+                  onPressed: pickGender,
+                  gender: Gender.MALE,
+                  current: activeGender,
                 ),
-                MyBoxContainer(
-                  active: activeGender == 'FEMALE',
-                  child: GenderButton(
-                    onPressed: pickGender("FEMALE"),
-                    title: 'FEMALE',
-                    icon: FontAwesomeIcons.venus,
-                  ),
+                GenderGesture(
+                  onPressed: pickGender,
+                  gender: Gender.FEMALE,
+                  current: activeGender,
+                ),
+              ],
+            ),
+          ),
+          MyBoxContainer(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'HEIGHT',
+                  style: AppStyles.labelText,
+                ),
+                Row(
+                  textBaseline: TextBaseline.alphabetic,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  children: [
+                    Text(height.toString(), style: AppStyles.bigLabelText),
+                    Text('cm', style: AppStyles.labelText),
+
+                  ],
+                ),
+                Slider(
+                  value: height.toDouble(),
+                  onChanged: setHeight,
+                  min: 100.0,
+                  max: 220.0,
                 ),
               ],
             ),
@@ -55,17 +86,20 @@ class _InputPageState extends State<InputPage> {
             child: Row(
               children: [
                 MyBoxContainer(),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Row(
-              children: [
-                MyBoxContainer(),
                 MyBoxContainer(),
               ],
             ),
           ),
+          Container(
+            color: Colors.pink,
+            height: 80.0,
+            child: Center(
+              child: Text(
+                'CALCULATE',
+                style: AppStyles.calculate,
+              ),
+            ),
+          )
         ],
       ),
     );
