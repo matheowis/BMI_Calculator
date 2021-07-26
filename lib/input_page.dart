@@ -1,12 +1,9 @@
-import 'dart:ui';
-
-import 'package:bmi_calculator/constants/AppColors.dart';
+// import 'dart:ui';
 import 'package:bmi_calculator/constants/AppStyles.dart';
-import 'package:bmi_calculator/unitls/MyMath.dart';
+import 'package:bmi_calculator/number_set_section.dart';
 import 'package:flutter/material.dart';
 import 'my_box_container.dart';
 import 'gender_gesture.dart';
-import 'unitls/MyMath.dart';
 
 class InputPage extends StatefulWidget {
   @override
@@ -16,10 +13,24 @@ class InputPage extends StatefulWidget {
 class _InputPageState extends State<InputPage> {
   Gender activeGender = Gender.NONE;
   int height = 180;
+  int weight = 74;
+  int age = 28;
 
   void setHeight(double h) {
     setState(() {
       height = h.round();
+    });
+  }
+
+  void setWeight(int value) {
+    setState(() {
+      weight = value;
+    });
+  }
+
+  void setAge(int value) {
+    setState(() {
+      age = value;
     });
   }
 
@@ -70,7 +81,6 @@ class _InputPageState extends State<InputPage> {
                   children: [
                     Text(height.toString(), style: AppStyles.bigLabelText),
                     Text('cm', style: AppStyles.labelText),
-
                   ],
                 ),
                 Slider(
@@ -85,8 +95,16 @@ class _InputPageState extends State<InputPage> {
           Expanded(
             child: Row(
               children: [
-                MyBoxContainer(),
-                MyBoxContainer(),
+                NumberSetSection(
+                  label: 'WEIGHT',
+                  onChange: setWeight,
+                  value: weight,
+                ),
+                NumberSetSection(
+                  label: 'AGE',
+                  onChange: setAge,
+                  value: age,
+                ),
               ],
             ),
           ),
