@@ -25,12 +25,12 @@ class BMICalculator extends StatelessWidget {
               color: Colors.white,
             ),
           )),
-      // home: InputPage(),
-      initialRoute: '/',
-      routes: {
-        '/':(context) => InputPage(),
-        '/result':(context) => ResultsPage(),
-      },
+      home: InputPage(),
+      // initialRoute: '/',
+      // routes: {
+      //   '/':(context) => InputPage(),
+      //   '/result':(context) => ResultsPage(),
+      // },
 
     );
   }

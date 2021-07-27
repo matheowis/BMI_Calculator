@@ -1,9 +1,12 @@
 // import 'dart:ui';
+import 'package:bmi_calculator/bottom_button.dart';
 import 'package:bmi_calculator/constants/AppStyles.dart';
 import 'package:bmi_calculator/number_set_section.dart';
+import 'package:bmi_calculator/result_page.dart';
 import 'package:flutter/material.dart';
 import 'my_box_container.dart';
 import 'gender_gesture.dart';
+import 'dart:math';
 
 class InputPage extends StatefulWidget {
   @override
@@ -38,6 +41,24 @@ class _InputPageState extends State<InputPage> {
     setState(() {
       activeGender = gender;
     });
+  }
+
+  void handleCalculate(){
+    double bmi = weight / (pow(height/100,2));
+    int sex = activeGender == Gender.MALE ? 1:0;
+    double score = age <= 15 ?
+    1.51*bmi - 0.7*age - 3.6*sex + 1.4 :
+        1.2 * bmi + 0.23 * age - 10.8 * sex - 5.4;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ResultsPage(
+
+          score: bmi,
+        ),
+      ),
+    );
   }
 
   @override
@@ -108,21 +129,10 @@ class _InputPageState extends State<InputPage> {
               ],
             ),
           ),
-          GestureDetector(
-            onTap: (){
-              Navigator.pushNamed(context, '/result');
-            },
-            child: Container(
-              color: Colors.pink,
-              height: 80.0,
-              child: Center(
-                child: Text(
-                  'CALCULATE',
-                  style: AppStyles.calculate,
-                ),
-              ),
-            ),
-          )
+          BottomButton(
+            onPressed: handleCalculate,
+            label: 'CALCULATE',
+          ),
         ],
       ),
     );
